@@ -3,17 +3,15 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import CoverImage from "./CoverImage";
 import Author from "./Author";
 import PostInteraction from "./PostInteraction";
+import { getPosts } from "@/services/postServices";
 
 export default async function PostList() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/list`);
-  const {
-    data: { posts },
-  } = await res.json();
+  const posts = await getPosts();
 
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => (
-        <div className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-300 p-2 rounded-lg">
+        <div key={post._id} className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-300 p-2 rounded-lg">
           <CoverImage {...post} />
           {/* post content */}
           <div>

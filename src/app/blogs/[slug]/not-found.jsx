@@ -1,9 +1,7 @@
 "use client";
-import useMoveBack from "@/hooks/useMoveBack";
 import Link from "next/link";
 
 export default function NotFound() {
-  const moveBack = useMoveBack();
   return (
     <div className="h-screen">
       <div className="container xl:max-w-screen-xl">
