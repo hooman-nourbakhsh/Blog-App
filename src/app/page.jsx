@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Button from "@/ui/Button";
 
+export const metadata = {
+  title: "صفحه اصلی | بلاگستان",
+};
+
 export default function Home() {
   return (
     <div>

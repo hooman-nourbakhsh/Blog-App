@@ -3,7 +3,10 @@ import "@/styles/globals.css";
 import Header from "@/components/Header";
 
 export const metadata = {
-  title: "پروژه وبلاگ",
+  title: {
+    template: "%s | بلاگستان",
+    default: "بلاگستان",
+  },
   description: "این پروژه به کمک نکست 14 توسعه داده شده",
 };
 
