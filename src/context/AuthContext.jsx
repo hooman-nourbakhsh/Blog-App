@@ -88,7 +88,7 @@ export default function AuthProvider({ children }) {
     } catch (error) {
       const errorMsg = error?.response?.data?.message;
       dispatch({ type: "rejected", payload: errorMsg });
-      error.status !== 401 ? toast.error(errorMsg) : null;
+      if (error.status !== 401) errorMsg ? toast.error(errorMsg) : null;
     }
   }
 
@@ -98,7 +98,7 @@ export default function AuthProvider({ children }) {
     }
     fetchData();
   }, []);
-  
+
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, isLoading, error, signin, signup }}>
       {children}
