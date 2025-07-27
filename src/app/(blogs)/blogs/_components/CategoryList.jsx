@@ -5,6 +5,7 @@ export default async function CategoryList() {
   const {
     data: { categories },
   } = await res.json();
+  
   return (
     <ul className="space-y-4">
       <Link href="/blogs">همه</Link>

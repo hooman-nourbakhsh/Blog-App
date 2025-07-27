@@ -1,6 +1,6 @@
+import { ArrowUturnRightIcon } from "@heroicons/react/24/outline";
 import Avatar from "@/ui/Avatar";
 import Button from "@/ui/Button";
-import { ArrowUturnRightIcon } from "@heroicons/react/24/outline";
 
 export default function Comment({ comment, onAddComment }) {
   return (

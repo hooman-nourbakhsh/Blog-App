@@ -11,7 +11,7 @@ const initilaState = {
   message: "",
 };
 
-function CommentForm({ postId, parentId, onClose }) {
+export default function CommentForm({ postId, parentId, onClose }) {
   const [text, setText] = useState();
   const [state, formAction] = useActionState(createComment, initilaState);
 
@@ -43,4 +43,3 @@ function CommentForm({ postId, parentId, onClose }) {
     </div>
   );
 }
-export default CommentForm;
