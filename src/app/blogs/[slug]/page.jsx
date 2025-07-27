@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getPosts } from "@/services/postServices";
+import RelatedPost from "../_components/RelatedPost";
 
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const posts = await getPosts();
-  const slugs = posts.slice(0, 3).map((post) => ({ slug: post.slug }));
+  const slugs = posts.map((post) => ({ slug: post.slug }));
   return slugs;
 }
 
@@ -35,6 +36,7 @@ async function BlogDetail({ params }) {
           alt={post.title}
         />
       </div>
+      {post.related.length > 0 && <RelatedPost posts={post.related} />}
     </div>
   );
 }
