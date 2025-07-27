@@ -7,8 +7,8 @@ export async function getPostBySlug(slug) {
   return post;
 }
 
-export async function getPosts(options) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/list`, options);
+export async function getPosts(queries, options) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/list?${queries}`, options);
   const { data } = await res.json();
   const { posts } = data || {};
   return posts;
