@@ -3,11 +3,8 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import CoverImage from "./CoverImage";
 import Author from "./Author";
 import PostInteraction from "./PostInteraction";
-import { getPosts } from "@/services/postServices";
 
-export default async function PostList() {
-  const posts = await getPosts();
-
+export default async function PostList({ posts }) {
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => (
