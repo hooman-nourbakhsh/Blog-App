@@ -12,15 +12,16 @@ export default function Search() {
     e.preventDefault();
     const search = e.target.search;
     const searchValue = search.value;
-
     const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", "1");
     if (searchValue) {
       newParams.set("search", searchValue);
     } else {
       newParams.delete("search");
     }
 
-    router.push(pathname + "?" + newParams.toString(), { scroll: false });
+    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    // router.push(pathname + "?" + newParams.toString(), { scroll: false });
   };
 
   return (

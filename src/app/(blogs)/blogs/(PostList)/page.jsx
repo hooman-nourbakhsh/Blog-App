@@ -8,7 +8,7 @@ export default async function BlogPage({ searchParams }) {
   const queries = queryString.stringify(searchParams);
   const coookieStore = cookies();
   const options = setCookieOnReq(coookieStore);
-  const posts = await getPosts(queries, options);
+  const { posts } = await getPosts(queries, options);
 
   const { search } = searchParams;
 

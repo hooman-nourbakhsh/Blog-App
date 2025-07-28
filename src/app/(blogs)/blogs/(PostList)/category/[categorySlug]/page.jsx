@@ -10,7 +10,7 @@ export default async function Category({ params, searchParams }) {
   const queries = `${queryString.stringify(searchParams)}&categorySlug=${categorySlug}`;
   const coookieStore = cookies();
   const options = setCookieOnReq(coookieStore);
-  const posts = await getPosts(queries, options);
+  const {posts} = await getPosts(queries, options);
 
   return (
     <div>
