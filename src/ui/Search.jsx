@@ -9,7 +9,7 @@ export default function Search() {
   const pathname = usePathname();
 
   const formSubmit = (e) => {
-    e.peventDefault();
+    e.preventDefault();
     const search = e.target.search;
     const searchValue = search.value;
 
