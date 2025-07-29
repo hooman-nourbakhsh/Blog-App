@@ -5,16 +5,17 @@ import ButtonIcon from "@/ui/ButtonIcon";
 import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
-import TextField from "@/ui/TextField";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useCreatePost from "./useCreatePost";
 import { SpinnerMini } from "@/ui/Spinner";
 import { useRouter } from "next/navigation";
+import useEditPost from "./useEditPost";
+import { imageUrlToFile } from "@/utils/fileFormatter";
 
 const schema = yup
   .object({
@@ -27,19 +28,53 @@ const schema = yup
   })
   .required();
 
-export default function CreatePostForm() {
+export default function CreatePostForm({ postToEdit = {} }) {
+  const { _id: editId } = postToEdit;
+  const isEditSession = Boolean(editId);
+  const { title, text, slug, briefText, readingTime, category, coverImage, coverImageUrl: prevCoverImageUrl } = postToEdit;
+
+  let editValues = {};
+  if (isEditSession) {
+    editValues = {
+      title,
+      text,
+      slug,
+      briefText,
+      readingTime,
+      category: category._id,
+      coverImage, // https://floan.ir/upload/folan.png => File !!!
+    };
+  }
+
   const { categories } = useCategories();
-  const [coverImageUrl, setCoverImageUrl] = useState(null);
+  const [coverImageUrl, setCoverImageUrl] = useState(prevCoverImageUrl || null);
   const { createPost, isCreating } = useCreatePost();
+  const { editPost, isEditing } = useEditPost();
   const router = useRouter();
 
   const {
     control,
+    reset,
     register,
     formState: { errors },
     handleSubmit,
     setValue,
-  } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
+  } = useForm({
+    mode: "onTouched",
+    resolver: yupResolver(schema),
+    defaultValues: editValues,
+  });
+
+  useEffect(() => {
+    if (prevCoverImageUrl) {
+      // convert preve link to file
+      async function fetchMyApi() {
+        const file = await imageUrlToFile(prevCoverImageUrl);
+        setValue("coverImage", file);
+      }
+      fetchMyApi();
+    }
+  }, [editId, prevCoverImageUrl, setValue]);
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -48,11 +83,23 @@ export default function CreatePostForm() {
       formData.append(key, data[key]);
     }
 
-    createPost(formData, {
-      onSuccess: () => {
-        router.push("/profile/posts");
-      },
-    });
+    if (isEditSession) {
+      editPost(
+        { id: editId, data: formData },
+        {
+          onSuccess: () => {
+            reset();
+            router.push("/profile/posts");
+          },
+        }
+      );
+    } else {
+      createPost(formData, {
+        onSuccess: () => {
+          router.push("/profile/posts");
+        },
+      });
+    }
   };
 
   return (
@@ -91,7 +138,7 @@ export default function CreatePostForm() {
 
       {coverImageUrl && (
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <Image fill alt="cover-iamge" src={coverImageUrl} className="object-fill object-center" />
+          <Image fill alt="cover-iamge" src={coverImageUrl} className="object-cover object-center" />
           <ButtonIcon
             onClick={() => {
               setCoverImageUrl(null);
@@ -104,7 +151,7 @@ export default function CreatePostForm() {
         </div>
       )}
       <div>
-        {isCreating ? (
+        {isCreating || isEditing ? (
           <SpinnerMini />
         ) : (
           <Button variant="primary" type="submit" className="w-full">

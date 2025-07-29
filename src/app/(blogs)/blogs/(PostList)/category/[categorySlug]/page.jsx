@@ -1,4 +1,4 @@
-import PostList from "@/app/blogs/_components/PostList";
+import PostList from "../../../_components/PostList";
 import { cookies } from "next/headers";
 import setCookieOnReq from "@/services/setCookieOnReq";
 import { getPosts } from "@/services/postServices";
@@ -10,7 +10,7 @@ export default async function Category({ params, searchParams }) {
   const queries = `${queryString.stringify(searchParams)}&categorySlug=${categorySlug}`;
   const coookieStore = cookies();
   const options = setCookieOnReq(coookieStore);
-  const {posts} = await getPosts(queries, options);
+  const { posts } = await getPosts(queries, options);
 
   return (
     <div>

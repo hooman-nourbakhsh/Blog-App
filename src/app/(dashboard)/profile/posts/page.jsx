@@ -8,7 +8,7 @@ import { getPosts } from "@/services/postServices";
 import Pagination from "@/ui/Pagination";
 
 export default async function PostPage({ searchParams }) {
-  const query = queryString.stringify(searchParams);
+  const query = queryString.stringify(await searchParams);
   const { totalPages } = await getPosts(query);
 
   return (

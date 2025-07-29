@@ -5,7 +5,7 @@ import { getPosts } from "@/services/postServices";
 import setCookieOnReq from "@/services/setCookieOnReq";
 
 export default async function fetchDataCard() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const options = setCookieOnReq(cookieStore);
 
   try {

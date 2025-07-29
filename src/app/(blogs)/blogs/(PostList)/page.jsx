@@ -5,12 +5,12 @@ import { getPosts } from "@/services/postServices";
 import queryString from "query-string";
 
 export default async function BlogPage({ searchParams }) {
-  const queries = queryString.stringify(searchParams);
-  const coookieStore = cookies();
+  const queries = queryString.stringify(await searchParams);
+  const coookieStore = await cookies();
   const options = setCookieOnReq(coookieStore);
   const { posts } = await getPosts(queries, options);
 
-  const { search } = searchParams;
+  const { search } = await searchParams;
 
   return (
     <>

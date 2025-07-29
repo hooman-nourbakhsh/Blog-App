@@ -7,20 +7,22 @@ import PostComment from "../_components/comment/PostComment";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const {posts}  = await getPosts();
+  const { posts } = await getPosts();
   const slugs = posts.map((post) => ({ slug: post.slug }));
   return slugs;
 }
 
 export async function generateMetadata({ params }) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
   return {
     title: `پست ${post.title}`,
   };
 }
 
 async function BlogDetail({ params }) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) notFound();
 
